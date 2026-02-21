@@ -1,19 +1,134 @@
 @import "tailwindcss";
 
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
+@layer utilities {
+  /* Horizontal Scroll: From right edge (100vw) to completely past left edge (-100%) */
+  @keyframes scroll-h {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* Vertical Scroll: From bottom edge to completely past top edge */
+  @keyframes scroll-v {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-100%); }
+  }
+
+  /* Background Rainbow Animation */
+  @keyframes gradient-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Text Rainbow Animation */
+  @keyframes hue-cycle {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+
+  @layer utilities {
+  .pause-on-hover:hover {
+    animation-play-state: paused;
+  }
 }
 
-@keyframes marqueeVertical {
-  0% { transform: translateY(0%); }
-  100% { transform: translateY(-100%); }
+/* Fix for Safari/Chrome rendering artifacts on massive text */
+.marquee-strip {
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
 }
 
-.animate-marquee {
-  animation: marquee 10s linear infinite;
+/* Improve Mobile Rotation logic */
+@media (max-width: 768px) {
+  .marquee-visual-layer {
+    /* Using dvh/dvw ensures it fits mobile viewports accurately */
+    width: 100dvh !important;
+    height: 100dvw !important;
+  }
 }
 
-.animate-marquee-vertical {
-  animation: marqueeVertical 5s linear infinite;
+  .animate-marquee-h { animation: scroll-h linear infinite; }
+  .animate-marquee-v { animation: scroll-v linear infinite; }
+
+  .animate-gradient-rainbow {
+    background: linear-gradient(-45deg, #ff0000, #ff7f00, #ffec00, #00ff00, #00ffff, #0000ff, #7f00ff, #ff00ff);
+    background-size: 400% 400%; 
+    animation: gradient-bg 12s ease-in-out infinite !important;
+  }
+
+  .animate-text-rainbow {
+    background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: hue-cycle 6s linear infinite !important;
+  }
+}
+
+/* BASE VISUAL LAYER (Desktop) */
+.marquee-visual-layer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* Hardware acceleration forces the browser to keep small text rendered */
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* THE STRIP - Solves the disappearing bug */
+.marquee-strip {
+  position: relative;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  will-change: transform;
+  width: max-content !important; 
+  /* min-height prevents the container from collapsing at small font sizes,
+     which often causes the browser to stop rendering the animation. */
+  min-height: 100px; 
+}
+
+/* MOBILE ROTATION */
+@media (max-width: 768px) {
+  .marquee-visual-layer {
+    /* Swap width/height to fill the landscape orientation on a portrait screen */
+    width: 100vh !important;
+    height: 100vw !important;
+    top: 50%;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Keeps Settings Menu and Buttons upright while the background is rotated */
+  .ui-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .ui-layer > * { 
+    pointer-events: auto; 
+  }
+
+  .settings-panel-mobile-container {
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(2, 6, 23, 0.98);
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    z-index: 105;
+  }
 }
