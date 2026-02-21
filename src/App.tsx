@@ -79,7 +79,7 @@ return (
       <div className="ui-layer">
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="absolute top-6 left-6 z-[120] p-3 rounded-2xl font-medium text-sm bg-zinc-900/60 border border-zinc-700/50 text-white backdrop-blur-xl hover:bg-zinc-800/80 hover:border-zinc-600 transition-all active:scale-95 shadow-lg"
+          className="absolute top-4 left-4 md:top-6 md:left-6 z-[120] p-3 md:p-3 rounded-xl font-medium text-sm bg-zinc-900/80 border border-zinc-700/50 text-white backdrop-blur-lg hover:bg-zinc-800/80 hover:border-zinc-600 transition-all active:scale-95 shadow-lg min-w-[48px] min-h-[48px] flex items-center justify-center"
         >
           {isMenuOpen ? '✕' : '☰'}
         </button>

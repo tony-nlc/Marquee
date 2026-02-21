@@ -94,41 +94,28 @@
   min-height: 100px; 
 }
 
-/* MOBILE ROTATION */
+/* MOBILE UI */
 @media (max-width: 768px) {
   .marquee-visual-layer {
-    /* Swap width/height to fill the landscape orientation on a portrait screen */
-    width: 100vh !important;
-    height: 100vw !important;
-    top: 50%;
-    left: 50%;
-    position: fixed;
-    transform: translate(-50%, -50%) rotate(90deg);
-    transform-origin: center center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100% !important;
+    height: 100% !important;
   }
 
-  /* Keeps Settings Menu and Buttons upright while the background is rotated */
-  .ui-layer {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    pointer-events: none;
-  }
-
-  .ui-layer > * { 
-    pointer-events: auto; 
+  /* Larger touch targets for mobile */
+  .ui-layer button {
+    padding: 14px !important;
+    min-width: 48px;
+    min-height: 48px;
   }
 
   .settings-panel-mobile-container {
     width: 100% !important;
     height: 100% !important;
-    background: rgba(10, 10, 15, 0.98);
+    background: #0d0d12 !important;
     position: fixed;
     inset: 0;
     overflow-y: auto;
     z-index: 105;
+    -webkit-overflow-scrolling: touch;
   }
 }

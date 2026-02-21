@@ -41,7 +41,7 @@ const SettingPanel = ({ settings, setSettings }: Props) => {
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full md:w-80 h-full bg-[#0d0d12]/95 backdrop-blur-xl text-white z-[90] p-6 pt-20 md:shadow-[0_0_80px_rgba(0,0,0,0.9)] flex flex-col gap-6 overflow-y-auto border-r border-white/5">
+    <div className="absolute top-0 left-0 w-full h-full bg-[#0d0d12]/98 backdrop-blur-xl text-white z-[90] p-5 pt-20 md:p-6 md:pt-20 md:w-80 md:shadow-[0_0_80px_rgba(0,0,0,0.9)] flex flex-col gap-5 md:gap-6 overflow-y-auto border-r border-white/5">
       {/* Header */}
       <div>
         <h2 className="text-xl font-bold tracking-tight">Marquee</h2>
