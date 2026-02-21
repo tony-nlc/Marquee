@@ -119,10 +119,6 @@ function App() {
         gif.addFrame(canvas, { delay: frameDelay, copy: true });
       }
 
-      // Restore original state
-      textElement.style.transform = originalTransform;
-      textElement.style.animation = originalAnimation;
-
       setExportProgress(90);
 
       gif.on('finished', (blob: Blob) => {
@@ -133,6 +129,14 @@ function App() {
         a.download = `marquee-${Date.now()}.gif`;
         a.click();
         URL.revokeObjectURL(url);
+        
+        // Restore and restart animation after export
+        textElement.style.transform = originalTransform;
+        textElement.style.animation = originalAnimation;
+        
+        // Force reflow to restart animation
+        void textElement.offsetWidth;
+        
         setIsExporting(false);
         setExportProgress(0);
       });
