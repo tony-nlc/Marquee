@@ -62,8 +62,8 @@ function App() {
       const container = marqueeRef.current;
       const width = container.offsetWidth || 800;
       const height = container.offsetHeight || 600;
-      const frameCount = 60;
-      const frameDelay = 80;
+      const frameCount = 120;
+      const frameDelay = 50;
       
       const gif = new GIF({
         workers: 2,
