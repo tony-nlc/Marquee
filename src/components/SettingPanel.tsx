@@ -43,16 +43,9 @@ const SettingPanel = ({ settings, setSettings }: Props) => {
   return (
     <div className="absolute top-0 left-0 w-full md:w-80 h-full bg-[#0d0d12]/95 backdrop-blur-xl text-white z-[90] p-6 pt-20 md:shadow-[0_0_80px_rgba(0,0,0,0.9)] flex flex-col gap-6 overflow-y-auto border-r border-white/5">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold tracking-tight">Marquee</h2>
-          <p className="text-xs text-zinc-500">Customize your text</p>
-        </div>
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
-        </div>
+      <div>
+        <h2 className="text-xl font-bold tracking-tight">Marquee</h2>
+        <p className="text-xs text-zinc-500 mt-1">Customize your text</p>
       </div>
 
       {/* Message Input */}
