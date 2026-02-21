@@ -1,16 +1,9 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import SettingPanel from './components/SettingPanel';
 import type { MarqueeSettings } from './types';
-import html2canvas from 'html2canvas';
-import GIF from 'gif.js';
-
-// Import worker properly for Vite
-import gifWorkerUrl from 'gif.js/dist/gif.worker.js?url';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const [exportProgress, setExportProgress] = useState(0);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState(200);
   
@@ -51,103 +44,6 @@ function App() {
   }, [settings.text, settings.direction, settings.fontSize]);
 
   const duration = (11 - settings.speed) * 1.5;
-
-  const exportAsGif = useCallback(async () => {
-    if (!marqueeRef.current || isExporting) return;
-    
-    setIsExporting(true);
-    setExportProgress(0);
-
-    try {
-      const container = marqueeRef.current;
-      const width = container.offsetWidth || 800;
-      const height = container.offsetHeight || 600;
-      const frameCount = 120;
-      const frameDelay = 50;
-      
-      const gif = new GIF({
-        workers: 2,
-        quality: 8,
-        width,
-        height,
-        workerScript: gifWorkerUrl
-      });
-
-      const textElement = container.querySelector('.marquee-strip') as HTMLElement;
-      
-      if (!textElement) {
-        throw new Error('Marquee text element not found');
-      }
-
-      // Store original styles to restore later
-      const originalTransform = textElement.style.transform;
-      const originalAnimation = textElement.style.animation;
-      
-      // Capture frames - position text at different offsets to simulate animation
-      for (let i = 0; i < frameCount; i++) {
-        setExportProgress(Math.round((i / frameCount) * 80));
-        
-        // Calculate horizontal offset: starts off-screen right, fully traverses, ends off-screen left
-        const startOffset = width + 100; // Start past right edge (text width buffer)
-        const endOffset = -300; // End past left edge
-        const pixelOffset = startOffset + (i / frameCount) * (endOffset - startOffset);
-        
-        // Position the strip manually at calculated offset
-        textElement.style.transform = `translateX(${pixelOffset}px)`;
-        textElement.style.animation = 'none';
-        
-        // Wait for DOM to update
-        await new Promise(r => setTimeout(r, 50));
-
-        const canvas = await html2canvas(container, {
-          width,
-          height,
-          scale: 1,
-          backgroundColor: settings.isBgRainbow ? '#000000' : settings.bgColor,
-          logging: false,
-          useCORS: true,
-          onclone: (clonedDoc) => {
-            // Ensure the cloned element has same dimensions
-            const clonedContainer = clonedDoc.querySelector('[ref="marqueeRef"]') || container;
-            Object.assign(clonedContainer.style, {
-              width: `${width}px`,
-              height: `${height}px`
-            });
-          }
-        });
-
-        gif.addFrame(canvas, { delay: frameDelay, copy: true });
-      }
-
-      setExportProgress(90);
-
-      gif.on('finished', (blob: Blob) => {
-        setExportProgress(100);
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `marquee-${Date.now()}.gif`;
-        a.click();
-        URL.revokeObjectURL(url);
-        
-        // Restore and restart animation after export
-        textElement.style.transform = originalTransform;
-        textElement.style.animation = originalAnimation;
-        
-        // Force reflow to restart animation
-        void textElement.offsetWidth;
-        
-        setIsExporting(false);
-        setExportProgress(0);
-      });
-
-      gif.render();
-    } catch (err) {
-      console.error('Export failed:', err);
-      setIsExporting(false);
-      setExportProgress(0);
-    }
-  }, [settings, isExporting]);
 
 return (
   <div 
@@ -194,10 +90,6 @@ return (
               settings={settings} 
               setSettings={setSettings} 
               setIsMenuOpen={setIsMenuOpen}
-              marqueeRef={marqueeRef}
-              isExporting={isExporting}
-              exportProgress={exportProgress}
-              onExport={exportAsGif}
             />
           </div>
         )}
