@@ -6,6 +6,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState(200);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
   
   const [settings, setSettings] = useState<MarqueeSettings>({
     text: "Enter Your Text",
@@ -19,19 +20,15 @@ function App() {
     speed: 5
   });
 
-  // Calculate responsive font size based on viewport and text length
   useEffect(() => {
     const calculateFontSize = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const textLength = settings.text.length;
-      const isVertical = settings.direction === 'vertical';
+      const isVertical = settings.direction === 'vertical' || isMobile;
       
-      // Base calculation: fit text to screen width/height
       const baseSize = isVertical ? vh * 0.4 : vw * 0.3;
-      // Adjust based on text length (longer text = smaller font)
       const lengthFactor = Math.max(1, textLength / 10);
-      // Apply size multiplier from settings (200=S, 300=M, 600=L -> 0.7, 1.0, 1.5)
       const sizeMultiplier = settings.fontSize / 300;
       const newSize = Math.max(32, Math.min((baseSize / lengthFactor) * sizeMultiplier, 400));
       
@@ -39,11 +36,18 @@ function App() {
     };
 
     calculateFontSize();
-    window.addEventListener('resize', calculateFontSize);
-    return () => window.removeEventListener('resize', calculateFontSize);
-  }, [settings.text, settings.direction, settings.fontSize]);
+    const resize = () => {
+      setIsMobile(window.innerWidth < 768);
+      calculateFontSize();
+    };
+
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
+  }, [settings.text, settings.direction, settings.fontSize, isMobile]);
 
   const duration = (11 - settings.speed) * 1.5;
+
+  const useVertical = settings.direction === 'vertical' || isMobile;
 
 return (
   <div 
@@ -53,10 +57,9 @@ return (
   >
     <div ref={marqueeRef} className="marquee-visual-layer pointer-events-none">
       <div 
-        // Force re-render on direction change to reset keyframes
-        key={settings.direction} 
+        key={settings.direction + (isMobile ? '-m' : '')} 
         className={`marquee-strip ${
-          settings.direction === 'horizontal' ? 'animate-marquee-h' : 'animate-marquee-v'
+          useVertical ? 'animate-marquee-v' : 'animate-marquee-h'
         }`}
         style={{ animationDuration: `${duration}s` }}
       >
@@ -66,8 +69,6 @@ return (
             color: settings.textColor,
             fontFamily: settings.fontFamily,
             fontSize: `${fontSize}px`,
-            paddingRight: settings.direction === 'horizontal' ? '0' : '0',
-            paddingBottom: settings.direction === 'vertical' ? '0' : '0'
           }}
         >
           {settings.text}

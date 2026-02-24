@@ -1,26 +1,22 @@
 @import "tailwindcss";
 
 @layer utilities {
-  /* Horizontal Scroll: From right edge (100vw) to completely past left edge (-100%) */
   @keyframes scroll-h {
     0% { transform: translateX(100vw); }
     100% { transform: translateX(-100%); }
   }
 
-  /* Vertical Scroll: From bottom edge to completely past top edge */
   @keyframes scroll-v {
     0% { transform: translateY(100vh); }
     100% { transform: translateY(-100%); }
   }
 
-  /* Background Rainbow Animation */
   @keyframes gradient-bg {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
 
-  /* Text Rainbow Animation */
   @keyframes hue-cycle {
     0% { filter: hue-rotate(0deg); }
     100% { filter: hue-rotate(360deg); }
@@ -32,7 +28,6 @@
   }
 }
 
-/* Fix for Safari/Chrome rendering artifacts on massive text */
 .marquee-strip {
   transform: translateZ(0);
   -webkit-font-smoothing: antialiased;
@@ -41,7 +36,6 @@
 /* Improve Mobile Rotation logic */
 @media (max-width: 768px) {
   .marquee-visual-layer {
-    /* Using dvh/dvw ensures it fits mobile viewports accurately */
     width: 100dvh !important;
     height: 100dvw !important;
   }
@@ -66,7 +60,38 @@
   }
 }
 
-/* BASE VISUAL LAYER (Desktop) */
+@media (max-width: 768px) {
+  .marquee-strip h1 {
+    writing-mode: vertical-lr;
+    transform: none;
+    text-align: center;
+    display: block;
+    width: 100%;
+  }
+}
+
+@media (width: 428px) and (height: 926px) and (orientation: portrait) {
+  .marquee-visual-layer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .marquee-strip {
+    width: 100% !important;
+    justify-content: center;
+    min-height: 200px; 
+  }
+
+  .marquee-strip h1 {
+    font-size: 220px !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    display: block;
+    width: auto;
+  }
+}
+
 .marquee-visual-layer {
   width: 100%;
   height: 100%;
@@ -76,32 +101,27 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  /* Hardware acceleration forces the browser to keep small text rendered */
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
-/* THE STRIP - Solves the disappearing bug */
 .marquee-strip {
   position: relative;
   white-space: nowrap;
   display: flex;
   align-items: center;
+  justify-content: center;
   will-change: transform;
   width: max-content !important; 
-  /* min-height prevents the container from collapsing at small font sizes,
-     which often causes the browser to stop rendering the animation. */
   min-height: 100px; 
 }
 
-/* MOBILE UI */
 @media (max-width: 768px) {
   .marquee-visual-layer {
     width: 100% !important;
     height: 100% !important;
   }
 
-  /* Larger touch targets for mobile */
   .ui-layer button {
     padding: 14px !important;
     min-width: 48px;
