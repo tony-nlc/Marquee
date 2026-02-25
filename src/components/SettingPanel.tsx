@@ -40,19 +40,6 @@ const SettingPanel = ({ settings, setSettings }: Props) => {
     setSettings(prev => ({ ...prev, [name]: value }));
   };
 
-  const OptionButton = ({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
-    <button 
-      onClick={onClick}
-      className={`px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-        active
-          ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-violet-500/25'
-          : 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700/50 hover:text-zinc-200 border border-zinc-700/30'
-      }`}
-    >
-      {children}
-    </button>
-  );
-
   return (
     <div className="absolute top-0 left-0 w-full h-full bg-[#0a0a0f] text-white z-[90] p-5 pt-20 md:p-6 md:pt-20 md:w-80 md:shadow-2xl md:shadow-black/50 flex flex-col gap-5 overflow-y-auto">
       {/* Header with glow effect */}
@@ -137,9 +124,9 @@ const SettingPanel = ({ settings, setSettings }: Props) => {
         </label>
         <div className="flex bg-zinc-900/80 p-1 rounded-2xl border border-zinc-800/60">
           {[
-            { v: 5, l: '🐢 Slow' },
-            { v: 7, l: '🚶 Normal' },
-            { v: 10, l: '🚀 Fast' }
+            { v: 5, l: ' Slow' },
+            { v: 7, l: ' Normal' },
+            { v: 10, l: ' Fast' }
           ].map((opt) => (
             <button 
               key={opt.v} 
