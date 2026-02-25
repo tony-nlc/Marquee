@@ -221,11 +221,6 @@ const SettingPanel = ({ settings, setSettings }: Props) => {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <div className="mt-auto pt-4 text-center">
-        <p className="text-[10px] text-zinc-600">v1.1 • Made with ✨</p>
-      </div>
     </div>
   );
 };
