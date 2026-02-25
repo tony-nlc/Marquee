@@ -78,11 +78,25 @@ return (
       </div>
 
       <div className="ui-layer">
+        {/* Menu Button - enhanced style */}
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="absolute top-4 left-4 md:top-6 md:left-6 z-[120] p-3 md:p-3 rounded-xl font-medium text-sm bg-zinc-900/80 border border-zinc-700/50 text-white backdrop-blur-lg hover:bg-zinc-800/80 hover:border-zinc-600 transition-all active:scale-95 shadow-lg min-w-[48px] min-h-[48px] flex items-center justify-center"
+          className="absolute top-4 left-4 md:top-6 md:left-6 z-[120] p-3 rounded-2xl font-medium text-sm 
+            bg-zinc-900/90 border border-zinc-700/50 text-white backdrop-blur-xl 
+            hover:bg-zinc-800/90 hover:border-zinc-500/50 hover:scale-105 
+            transition-all duration-200 active:scale-95 
+            shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30
+            min-w-[48px] min-h-[48px] flex items-center justify-center"
         >
-          {isMenuOpen ? '✕' : '☰'}
+          {isMenuOpen ? (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
         </button>
 
         {isMenuOpen && (
@@ -96,10 +110,16 @@ return (
         )}
       </div>
 
-      <footer className="absolute bottom-6 right-8 z-50 hidden md:flex flex-col items-end">
-        <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-zinc-600">Created by</span>
-        <a href="https://github.com/tony-nlc" target="_blank" rel="noreferrer" className="text-sm font-semibold text-zinc-400 hover:text-fuchsia-400 transition-colors">
-          TONY-NLC
+      {/* Footer - subtle and modern */}
+      <footer className="absolute bottom-6 right-6 z-50 hidden md:flex flex-col items-end gap-0.5">
+        <span className="text-[9px] font-medium uppercase tracking-[0.25em] text-zinc-700">Created by</span>
+        <a 
+          href="https://github.com/tony-nlc" 
+          target="_blank" 
+          rel="noreferrer" 
+          className="text-sm font-semibold text-zinc-500 hover:text-fuchsia-400 transition-colors duration-200"
+        >
+          tony-nlc
         </a>
       </footer>
     </div>

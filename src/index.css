@@ -22,15 +22,23 @@
     100% { filter: hue-rotate(360deg); }
   }
 
-  @layer utilities {
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+  }
+
   .pause-on-hover:hover {
     animation-play-state: paused;
   }
 }
 
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .marquee-strip {
   transform: translateZ(0);
-  -webkit-font-smoothing: antialiased;
 }
 
 /* Improve Mobile Rotation logic */
@@ -41,23 +49,27 @@
   }
 }
 
-  .animate-marquee-h { animation: scroll-h linear infinite; }
-  .animate-marquee-v { animation: scroll-v linear infinite; }
+.animate-marquee-h { 
+  animation: scroll-h linear infinite; 
+}
 
-  .animate-gradient-rainbow {
-    background: linear-gradient(-45deg, #ff0000, #ff7f00, #ffec00, #00ff00, #00ffff, #0000ff, #7f00ff, #ff00ff);
-    background-size: 400% 400%; 
-    animation: gradient-bg 12s ease-in-out infinite !important;
-  }
+.animate-marquee-v { 
+  animation: scroll-v linear infinite; 
+}
 
-  .animate-text-rainbow {
-    background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% auto;
-    animation: hue-cycle 6s linear infinite !important;
-  }
+.animate-gradient-rainbow {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #a855f7, #ec4899);
+  background-size: 400% 400%; 
+  animation: gradient-bg 8s ease infinite !important;
+}
+
+.animate-text-rainbow {
+  background: linear-gradient(to right, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: hue-cycle 4s linear infinite !important;
 }
 
 @media (max-width: 768px) {
@@ -116,6 +128,14 @@
   min-height: 100px; 
 }
 
+/* Glassmorphism effects */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 @media (max-width: 768px) {
   .marquee-visual-layer {
     width: 100% !important;
@@ -131,11 +151,42 @@
   .settings-panel-mobile-container {
     width: 100% !important;
     height: 100% !important;
-    background: #0d0d12 !important;
+    background: #0a0a0f !important;
     position: fixed;
     inset: 0;
     overflow-y: auto;
     z-index: 105;
     -webkit-overflow-scrolling: touch;
   }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Smooth transitions for all interactive elements */
+button, input, textarea, select {
+  transition: all 0.2s ease;
+}
+
+/* Focus states */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(139, 92, 246, 0.5);
+  outline-offset: 2px;
 }
